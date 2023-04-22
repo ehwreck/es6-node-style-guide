@@ -25,7 +25,7 @@ according to your preferences.
 * [80 characters per line](#80-characters-per-line)
 * [Use single quotes](#use-single-quotes)
 * [Opening braces go on the same line](#opening-braces-go-on-the-same-line)
-* [Declare one variable per var statement](#declare-one-variable-per-var-statement)
+* [Declare one variable per let statement](#declare-one-variable-per-let-statement)
 
 ### Naming Conventions
 * [Use lowerCamelCase for variables, properties and function names](#use-lowercamelcase-for-variables-properties-and-function-names)
@@ -79,7 +79,6 @@ careless neglect will eventually drive away contributors and/or co-workers.
 ### Use Semicolons
 
 According to [scientific research][hnsemicolons], the usage of semicolons is
-a core value of our community. Consider the points of [the opposition][], but
 be a traditionalist when it comes to abusing error correction mechanisms for
 cheap syntactic pleasures.
 
@@ -99,13 +98,13 @@ Use single quotes, unless you are writing JSON.
 *Right:*
 
 ```js
-var foo = 'bar';
+let foo = 'bar';
 ```
 
 *Wrong:*
 
 ```js
-var foo = "bar";
+let foo = "bar";
 ```
 
 ### Opening braces go on the same line
@@ -131,9 +130,9 @@ if (true)
 
 Also, notice the use of whitespace before and after the condition statement.
 
-### Declare one variable per var statement
+### Declare one variable per let statement
 
-Declare one variable per var statement, it makes it easier to re-order the
+Declare one variable per let statement, it makes it easier to re-order the
 lines. However, ignore [Crockford][crockfordconvention] when it comes to
 declaring variables deeper inside a function, just put the declarations wherever
 they make sense.
@@ -141,12 +140,12 @@ they make sense.
 *Right:*
 
 ```js
-var keys   = ['foo', 'bar'];
-var values = [23, 42];
+let keys   = ['foo', 'bar'];
+let values = [23, 42];
 
-var object = {};
+let object = {};
 while (keys.length) {
-  var key = keys.pop();
+  let key = keys.pop();
   object[key] = values.pop();
 }
 ```
@@ -154,7 +153,7 @@ while (keys.length) {
 *Wrong:*
 
 ```js
-var keys = ['foo', 'bar'],
+let keys = ['foo', 'bar'],
     values = [23, 42],
     object = {},
     key;
@@ -178,13 +177,13 @@ abbreviations should generally be avoided.
 *Right:*
 
 ```js
-var adminUser = db.query('SELECT * FROM users ...');
+let adminUser = db.query('SELECT * FROM users ...');
 ```
 
 *Wrong:*
 
 ```js
-var admin_user = db.query('SELECT * FROM users ...');
+let admin_user = db.query('SELECT * FROM users ...');
 ```
 
 ### Use UpperCamelCase for class names
@@ -194,14 +193,14 @@ Class names should be capitalized using `UpperCamelCase`.
 *Right:*
 
 ```js
-function BankAccount() {
+const BankAccount = () => {
 }
 ```
 
 *Wrong:*
 
 ```js
-function bank_Account() {
+const bank_Account = () => {
 }
 ```
 
@@ -213,9 +212,9 @@ using all uppercase letters.
 *Right:*
 
 ```js
-var SECOND = 1 * 1000;
+let SECOND = 1 * 1000;
 
-function File() {
+const File() => {
 }
 File.FULL_PERMISSIONS = 0777;
 ```
@@ -225,7 +224,7 @@ File.FULL_PERMISSIONS = 0777;
 ```js
 const SECOND = 1 * 1000;
 
-function File() {
+const File = () => {
 }
 File.fullPermissions = 0777;
 ```
@@ -242,8 +241,8 @@ keys when your interpreter complains:
 *Right:*
 
 ```js
-var a = ['hello', 'world'];
-var b = {
+let a = ['hello', 'world'];
+let b = {
   good: 'code',
   'is generally': 'pretty',
 };
@@ -252,10 +251,10 @@ var b = {
 *Wrong:*
 
 ```js
-var a = [
+let a = [
   'hello', 'world'
 ];
-var b = {"good": 'code'
+let b = {"good": 'code'
         , is generally: 'pretty'
         };
 ```
@@ -270,7 +269,7 @@ the triple equality operator as it will work just as expected.
 *Right:*
 
 ```js
-var a = 0;
+let a = 0;
 if (a !== '') {
   console.log('winning');
 }
@@ -280,7 +279,7 @@ if (a !== '') {
 *Wrong:*
 
 ```js
-var a = 0;
+let a = 0;
 if (a == '') {
   console.log('losing');
 }
@@ -295,7 +294,7 @@ The ternary operator should not be used on a single line. Split it up into multi
 *Right:*
 
 ```js
-var foo = (a === b)
+let foo = (a === b)
   ? 1
   : 2;
 ```
@@ -303,7 +302,7 @@ var foo = (a === b)
 *Wrong:*
 
 ```js
-var foo = (a === b) ? 1 : 2;
+let foo = (a === b) ? 1 : 2;
 ```
 
 ### Use descriptive conditions
@@ -313,7 +312,7 @@ Any non-trivial conditions should be assigned to a descriptively named variable 
 *Right:*
 
 ```js
-var isValidPassword = password.length >= 4 && /^(?=.*\d).{4,}$/.test(password);
+let isValidPassword = password.length >= 4 && /^(?=.*\d).{4,}$/.test(password);
 
 if (isValidPassword) {
   console.log('winning');
@@ -328,6 +327,95 @@ if (password.length >= 4 && /^(?=.*\d).{4,}$/.test(password)) {
 }
 ```
 
+## Export and import
+
+### Exporting from a file
+Exporting variables, functions, or classes from a file can be achieved in a couple different ways in ES6.
+A couple sceneraios you will encounter are below.
+
+#### Exporting multiple items from a file
+```js
+// FILE 1
+const add = (a, b) => {
+  return a + b;
+}
+
+const subtract = (a, b) => {
+  return a - b;
+}
+
+export { add, substract }
+```
+
+```js
+// FILE 1
+export const add = (a, b) => {
+  return a + b;
+}
+
+export const subtract = (a, b) => {
+  return a - b;
+}
+```
+
+Importing from the examples above is done as below:
+```js
+// FILE 2
+import { add, subtract } from './file1.js'
+```
+
+#### Exporting a single item from a file
+When exporting a single item from a file it is cleaner to use a default export.
+It is not recommended to export default an anonymous function.
+```js
+// FILE 1
+export default function isTall(inches){
+  return inches > 72
+}
+```
+```js
+function isTall(inches){
+  return inchex > 72
+}
+
+export default isTall;
+```
+Importing from the examples above looks like this. Notice this is way cleaner.
+```js
+// FILE 2
+import isTall from './file1.js'
+```
+
+#### Exporting for libraries (used on libraries such as ReactJS, etc.)
+```js
+export const add = (a, b) => {
+  return a + b;
+}
+export const subtract = (a, b) =>{
+    return a - b;
+}
+export const multiply = (a, b) => {
+  return a * b;
+}
+export const divide = (a, b) => {
+  return a / b;
+}
+const Math = {add, subtract, multiply, divide};
+
+export default Math;
+```
+
+Importing from the example above looks like this.
+```js
+// FILE 2
+import Math, { add } from './file1.js'
+
+// Using the functions
+Math.multiply(1,2);
+
+add.(1,2);
+```
+
 ## Functions
 
 ### Write small functions
@@ -338,13 +426,12 @@ perfect vision and limit yourself to ~15 lines of code per function.
 
 ### Return early from functions
 
-To avoid deep nesting of if-statements, always return a function's value as early
 as possible.
 
 *Right:*
 
 ```js
-function isPercentage(val) {
+const isPercentage = (val) => {
   if (val < 0) {
     return false;
   }
@@ -360,7 +447,7 @@ function isPercentage(val) {
 *Wrong:*
 
 ```js
-function isPercentage(val) {
+const isPercentage = (val) => {
   if (val >= 0) {
     if (val < 100) {
       return true;
@@ -377,8 +464,8 @@ Or for this particular example it may also be fine to shorten things even
 further:
 
 ```js
-function isPercentage(val) {
-  var isInRange = (val >= 0 && val <= 100);
+const isPercentage = (val) => {
+  let isInRange = (val >= 0 && val <= 100);
   return isInRange;
 }
 ```
@@ -391,15 +478,17 @@ will produce better stack traces, heap and cpu profiles.
 *Right:*
 
 ```js
-req.on('end', function onEnd() {
+req.on('end', onEnd);
+
+const onEnd = () => {
   console.log('winning');
-});
+}
 ```
 
 *Wrong:*
 
 ```js
-req.on('end', function() {
+req.on('end', () => {
   console.log('losing');
 });
 ```
@@ -411,11 +500,11 @@ Use closures, but don't nest them. Otherwise your code will become a mess.
 *Right:*
 
 ```js
-setTimeout(function() {
+setTimeout(() => {
   client.connect(afterConnect);
 }, 1000);
 
-function afterConnect() {
+const afterConnect = () => {
   console.log('winning');
 }
 ```
@@ -423,8 +512,8 @@ function afterConnect() {
 *Wrong:*
 
 ```js
-setTimeout(function() {
-  client.connect(function() {
+setTimeout(() => {
+  client.connect(() => {
     console.log('losing');
   });
 }, 1000);
@@ -443,7 +532,7 @@ You should also indent these methods so it's easier to tell they are part of the
 User
   .findOne({ name: 'foo' })
   .populate('bar')
-  .exec(function(err, user) {
+  .exec((err, user) => {
     return true;
   });
 ```
@@ -454,23 +543,23 @@ User
 User
 .findOne({ name: 'foo' })
 .populate('bar')
-.exec(function(err, user) {
+.exec((err, user) => {
   return true;
 });
 
 User.findOne({ name: 'foo' })
   .populate('bar')
-  .exec(function(err, user) {
+  .exec((err, user) => {
     return true;
   });
 
 User.findOne({ name: 'foo' }).populate('bar')
-.exec(function(err, user) {
+.exec((err, user) => {
   return true;
 });
 
 User.findOne({ name: 'foo' }).populate('bar')
-  .exec(function(err, user) {
+  .exec((err, user) => {
     return true;
   });
 ```
@@ -487,16 +576,16 @@ segments of your code. Don't use comments to restate trivial things.
 
 ```js
 // 'ID_SOMETHING=VALUE' -> ['ID_SOMETHING=VALUE', 'SOMETHING', 'VALUE']
-var matches = item.match(/ID_([^\n]+)=([^\n]+)/));
+let matches = item.match(/ID_([^\n]+)=([^\n]+)/));
 
 // This function has a nasty side effect where a failure to increment a
 // redis counter used for statistics will cause an exception. This needs
 // to be fixed in a later iteration.
-function loadUser(id, cb) {
+const loadUser = (id, cb) => {
   // ...
 }
 
-var isSessionValid = (session.expires < Date.now());
+let isSessionValid = (session.expires < Date.now());
 if (isSessionValid) {
   // ...
 }
@@ -506,15 +595,15 @@ if (isSessionValid) {
 
 ```js
 // Execute a regex
-var matches = item.match(/ID_([^\n]+)=([^\n]+)/);
+let matches = item.match(/ID_([^\n]+)=([^\n]+)/);
 
-// Usage: loadUser(5, function() { ... })
-function loadUser(id, cb) {
+// Usage: loadUser(5, () => { ... })
+const loadUser = (id, cb) => {
   // ...
 }
 
 // Check if the session is valid
-var isSessionValid = (session.expires < Date.now());
+let isSessionValid = (session.expires < Date.now());
 // If the session is valid
 if (isSessionValid) {
   // ...
@@ -549,7 +638,7 @@ be forever grateful.
 *Right:*
 
 ```js
-var a = [];
+let a = [];
 if (!a.length) {
   console.log('winning');
 }
@@ -558,11 +647,11 @@ if (!a.length) {
 *Wrong:*
 
 ```js
-Array.prototype.empty = function() {
+Array.prototype.empty = () => {
   return !this.length;
 }
 
-var a = [];
+let a = [];
 if (a.empty()) {
   console.log('losing');
 }
